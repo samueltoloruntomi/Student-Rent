@@ -37,17 +37,17 @@ export const Footer = () => {
         </div>
 
         <div className={`${styles.iconList}`}>
-                <a href="" className="me-5 link-grayish">
+                <a href="https://www.facebook.com/toloruntomi.s.femi" className="me-5 link-grayish">
                     <i class="bi bi-facebook"></i>
                 </a>
-                <a href="" className="me-5 link-grayish">
+                <a href="https://twitter.com/OlufemiTravis" className="me-5 link-grayish">
                     <i class="bi bi-twitter"></i>
                 </a>
-                <a href="" className="me-5 link-grayish">
+                <a href="https://www.linkedin.com/m/in/samuel-toloruntomi" className="me-5 link-grayish">
                     <i class="bi bi-linkedin"></i>
                 </a>
-                <a href="" className="me-5 link-grayish">
-                    <i class="bi bi-instagram"></i>
+                <a href="https://github.com/samueltoloruntomi" className="me-5 link-grayish">
+                    <i class="bi bi-github"></i>
                 </a>
               </div>
         </div>
