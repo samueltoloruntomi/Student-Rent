@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/otitoju/slammy.git"
+    "url": "git+https://github.com/samueltoloruntomi/Student-Rent.git"
   },
-  "author": "otitoju",
+  "author": "samuel",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/otitoju/slammy/issues"
+    "url": "https://github.com/samueltoloruntomi/Student-Rent/issues"
   },
-  "homepage": "https://github.com/otitoju/slammy#readme",
+  "homepage": "https://github.com/samueltoloruntomi/Student-Rent#readme",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
