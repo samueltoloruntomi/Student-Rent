@@ -1,2 +1,3 @@
+//for conversion of js VERSION ES5 TO ES6
 require('babel-polyfill')
 require('./server/app')

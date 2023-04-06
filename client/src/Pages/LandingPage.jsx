@@ -33,6 +33,7 @@ export const LandingPage = () => {
               placeholder="Enter post code within Edinburgh. Eg EH10, 5DT"
               className={styles.input}
             />{" "}
+           
             {/* <Link to={`/houses/${searchQuery}`}> */}
                 <button
                 style={{backgroundColor: '#FF4545', color: 'aliceblue'}}

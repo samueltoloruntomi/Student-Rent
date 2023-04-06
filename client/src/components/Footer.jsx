@@ -14,21 +14,18 @@ export const Footer = () => {
 
           <ul className={` ${styles.navBar}`}>
           <li className="">
-            <a href="#learn" className={`nav-link ${styles.navLink}`}>Agents</a>
+            <a href="https://www.gumtree.co.uk/" className={`nav-link ${styles.navLink}`}>Agents</a>
           </li>
           <li className="">
-            <a href="#questions" className={`nav-link ${styles.navLink}`}>Napier</a>
+            <a href="https://www.napier.ac.uk/" className={`nav-link ${styles.navLink}`}>Napier</a>
           </li>
-          <li className="nav-item">
-            <a href="#questions" className={`nav-link ${styles.navLink}`}>SiteMap</a>
+          
+          <li className={`nav-item ${styles.navLink}`}>
+            <a href="https://www.researchgate.net/profile/Samuel-Toloruntomi-2" className={`nav-link ${styles.navLink}`}>Contact</a>
           </li>
 
           <li className={`nav-item ${styles.navLink}`}>
-            <a href="#questions" className={`nav-link ${styles.navLink}`}>Contact</a>
-          </li>
-
-          <li className={`nav-item ${styles.navLink}`}>
-            <a href="#questions" className={`nav-link ${styles.navLink}`}>About</a>
+            <a href="https://livenapierac-my.sharepoint.com/personal/40500521_live_napier_ac_uk/Documents/DISSERTATION/TOLORUNTOMI_Dissertation_40500521.docx" className={`nav-link ${styles.navLink}`}>About</a>
           </li>
         </ul>
 

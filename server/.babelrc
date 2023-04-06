@@ -4,3 +4,4 @@
 {
     "presets": [ "es2015" ]
   }
+//used to convert es5 to es6 for faster compilation, as code is written in es5, e.g. import......

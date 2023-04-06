@@ -9,5 +9,12 @@ export async function GetScrapedData(postalCode) {
       throw error;
     }
   }
-
+  export async function GetZooplaScrapedData(postalCode) {
+    try {
+      const info = await axios.get(BaseUrl + "zoopla/" + postalCode);
+      return info.data.data;
+    } catch (error) {
+      throw error;
+    }
+  }
   

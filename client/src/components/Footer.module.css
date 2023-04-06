@@ -28,7 +28,6 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 16px;
-
     color: #FFFFFF !important;
 
 }
@@ -42,6 +41,7 @@
 }
 
 .creator {
+    font-family: 'Roboto';
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,9 +52,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 .iconList a {
     color: #FFFFFF !important;
     font-size: 1.5rem;
-}
+    padding-left: 4%;
+    }

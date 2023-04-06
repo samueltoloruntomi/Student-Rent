@@ -25,7 +25,7 @@ export const Header = () => {
             <a href="/" className="nav-link">Home</a>
           </li>
           <li className="nav-item">
-            <a href="/" className="nav-link">About</a>
+            <a href="https://livenapierac-my.sharepoint.com/personal/40500521_live_napier_ac_uk/Documents/DISSERTATION/TOLORUNTOMI_Dissertation_40500521.docx" className="nav-link">About</a>
           </li>
 
         </ul>

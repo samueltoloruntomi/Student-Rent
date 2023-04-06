@@ -9,11 +9,11 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css"; 
 import Pagination from "../components/Pagination"; 
 import { useParams } from "react-router-dom";
-import { GetScrapedData } from "../UTILS/API";
+import { GetScrapedData, GetZooplaScrapedData } from "../UTILS/API";
 import { Loader } from "../components/Loader";
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
-
+import { checkImageUrl } from "../UTILS/imageChecker";
 const ListOfHouses = [
   {
     _id: "640df0b5c2052f45ae0c725d",
@@ -99,7 +99,9 @@ export const Houses = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const { code } = useParams();
-
+  
+  //default images for houses without images from zoopla
+  const DEFAULT_IMAGE_URL = 'https://img.freepik.com/free-vector/coming-soon-construction-yellow-design_1017-26685.jpg?w=2000'
 
   // const properties = [
   //     { name: 'Semi-detached', code: 1 },
@@ -146,10 +148,16 @@ export const Houses = () => {
 
   }, [])
 
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
   const searchFunction = async () => {
     const houses = await GetScrapedData(code);
-    console.log(houses);
-    setHouses(houses)
+    const zooplaHouses = await GetZooplaScrapedData(code);
+    const results = [...houses, ...zooplaHouses]
+    let shuffledData = shuffleArray(results);
+    setHouses(shuffledData)
     return
   }
 
@@ -170,13 +178,15 @@ export const Houses = () => {
       const bedroom = Number(house.rooms.split(" ")[0]);
       const property = house.agent.toLowerCase().split(" ");
 
-      return (price >= minPrice && price <= maxPrice) && (bedroom >= minRoom && bedroom <= maxRoom);
+      // THE RULE ENGINE
+      return (price >= minPrice && price <= maxPrice) || (bedroom >= minRoom && bedroom <= maxRoom);
     });
     
     if(filteredData.length > 0)  {
       setHouses(filteredData);
     }
     else {
+      searchFunction();
       return;
     }
   };
@@ -221,7 +231,8 @@ export const Houses = () => {
                   
   
                   <div className="col-md-2">
-                    <Button onClick={filteredFunction} label="Search" />
+                    <Button onClick={filteredFunction} label="Search" severity="danger" />
+                    
                   </div>
                   </div>
                   
@@ -237,24 +248,36 @@ export const Houses = () => {
             return (
               <div
                 class="card mb-3"
-                style={{ maxWidth: "840px", marginTop: "0px" }}
+                style={{ maxWidth: "1800px", marginTop: "0px" }}
                 key={i}
+                // onClick={handleNavigation(house.link)}
               >
-                <div class="row g-0">
+                {/* to open new window when search results are clicked */}
+                <div class="row g-0" onClick={(e) => {
+                  e.preventDefault();
+                  let str = house.link
+                  if(str.charAt(1) == 'p') {
+                    window.open(`https://www.gumtree.com${house.link}`, '_blank');
+                  }
+                  else {
+                    window.open(`https://www.zoopla.co.uk${house.link}`, '_blank');
+                  }
+                }}>
                   <div class="col-md-4">
-                    <img
-                      src={house.thumbnail}
-                      class="img-fluid rounded-start"
-                      alt="..."
-                      style={{height: "100%"}}
-                    />
+                  {house.thumbnail && (
+              <img src={house.thumbnail} alt={house.title} class="img-fluid rounded-start" style={{height: "100%"}}/>
+            )}
+            {!house.thumbnail && (
+              <img src={DEFAULT_IMAGE_URL} alt={house.title} class="img-fluid rounded-start" style={{height: "100%"}}/>
+            )}
                   </div>
                   <div class="col-md-8">
                     <div class="card-body">
                       <h5 class="card-title"><strong>{house.price}</strong></h5>
                       {/* <h6 class="card-subtitle">{house.price}</h6> */}
-                      <h5>{house.title}</h5>
-                      <p class="card-text">{house.description}</p>
+                      <h5 className={styles.h5}>{house.title}</h5>
+                     <h6> <p class="card-text-truncate-paragraph">{house.description}</p> 
+                     </h6>
                       <h6>
                       <i class="bi bi-geo-fill"></i> {house.address}
                       </h6>
@@ -262,12 +285,14 @@ export const Houses = () => {
                       <i class="bi bi-house-door"></i> {house.rooms}
                       </h6>
   
-                      <p class="card-text">
-                        <small class="text-muted">{house?.agent.split(" ")[0].replace("Agency", "")} {house?.agent.split(" ")[1]} {house?.agent.split(" ")[2]} / {house?.agent.split(" ")[3]} / {house?.agent.split(" ")[4].length <= 9 ? house?.agent.split(" ")[4].slice(0, -5) : house?.agent.split(" ")[4].slice(0, -6) }</small>
-                      </p>
-                      {/* <p class="card-text">
-                        <small class="text-muted">{house.agent.split(" ")[4].length <= 9 ? house.agent.split(" ")[4].slice(4, 8) : house.agent.split(" ")[4].slice(4, 9)}</small>
-                      </p> */}
+                      {
+                      house.agent && <p class="card-text">
+                      <small class="text-muted">{ house?.agent?.split(" ")[0]?.replace("Agency", "")} {house?.agent.split(" ")[1]} {house?.agent.split(" ")[2]} / {house?.agent.split(" ")[3]} / {house?.agent.split(" ")[4].length <= 9 ? house?.agent.split(" ")[4].slice(0, -5) : house?.agent.split(" ")[4].slice(0, -6) }</small>
+                    </p>
+                    }
+                    <p class="card-text">
+                      <small class="text-muted">{house?.availability}</small>
+                    </p>
                     </div>
                   </div>
                 </div>
@@ -289,7 +314,7 @@ export const Houses = () => {
     );
   }
    else  {
-    return <Loader />
+    return <Loader/>
    }
 
   
