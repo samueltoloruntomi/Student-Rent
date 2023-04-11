@@ -9,11 +9,12 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css"; 
 import Pagination from "../components/Pagination"; 
 import { useParams } from "react-router-dom";
-import { GetScrapedData, GetZooplaScrapedData } from "../UTILS/API";
+import { GetScrapedData, GetZooplaScrapedData, GetAltZooplaScrapedData } from "../UTILS/API";
 import { Loader } from "../components/Loader";
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
-import { checkImageUrl } from "../UTILS/imageChecker";
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 const ListOfHouses = [
   {
     _id: "640df0b5c2052f45ae0c725d",
@@ -103,17 +104,6 @@ export const Houses = () => {
   //default images for houses without images from zoopla
   const DEFAULT_IMAGE_URL = 'https://img.freepik.com/free-vector/coming-soon-construction-yellow-design_1017-26685.jpg?w=2000'
 
-  // const properties = [
-  //     { name: 'Semi-detached', code: 1 },
-  //     { name: 'Detached', code: 2 },
-  //     { name: 'Flat', code: 3 },
-  //     { name: 'Terraced', code: 4 },
-  //     { name: 'Bungalow', code: 5 },
-  //     { name: 'Park homes', code: 6 },
-  //     { name: 'House', code: 7 },
-  //     { name: 'Other', code: 8 }
-  // ];
-
   const rooms = [
   
     { name: '1' },
@@ -161,9 +151,15 @@ export const Houses = () => {
     return
   }
 
+  const AltSearchFunction = async () => {
+    const houses = await GetAltZooplaScrapedData(code, 350, 1000);
+    console.log(houses)
+   setHouses(houses)
+    return
+  }
+
   const filteredFunction = async (e) => {
     e.preventDefault();
-    
     // Use Number() to convert price strings to numbers
     const minPrice = Number(selectedMinPrice?.name.split(" ")[0].replace('£', ''));
     const maxPrice = Number(selectedMaxPrice?.name.split(" ")[0].replace('£', ''));
@@ -173,20 +169,39 @@ export const Houses = () => {
 
   
     // Use Array.filter() to filter houses by price range
-    const filteredData = houses.filter(house => {
+    const filteredData = await houses.filter(house => {
       const price = Number(house.price.split(" ")[0].replace(/[^\d.-]/g, "")); // Convert house price to number
       const bedroom = Number(house.rooms.split(" ")[0]);
-      const property = house.agent.toLowerCase().split(" ");
+      //const property = house.agent.toLowerCase().split(" ");
 
       // THE RULE ENGINE
       return (price >= minPrice && price <= maxPrice) || (bedroom >= minRoom && bedroom <= maxRoom);
     });
-    
+    console.log(filteredData);
     if(filteredData.length > 0)  {
       setHouses(filteredData);
     }
     else {
-      searchFunction();
+      // searchFunction();
+      
+      //toastify alert pop-up
+  Toastify({
+    text: "No record found!, but we are looking for suitable accomodation close to your search.",
+    duration: 5000,
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "center", // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: "linear-gradient(to right, #ff0000, #f00000)",
+    },
+    onClick: function(){} // Callback after click
+  }).showToast();
+
+  setTimeout(() => {
+    AltSearchFunction();
+  }, 7000)
       return;
     }
   };
@@ -203,6 +218,7 @@ export const Houses = () => {
       <div>
         <Header />
         <div className="container">
+          
         <div className={` card mb-3 ${styles.filterSearch}`}>
           <form className={`${styles.formCenter}`}>
               <div className="row g-2 container">
@@ -299,14 +315,6 @@ export const Houses = () => {
               </div>
             );
           })}
-  
-        {/* <Pagination
-          className="pagination-bar"
-          currentPage={currentPage}
-          totalCount={ListOfHouses.length}
-          pageSize={PageSize}
-          onPageChange={page => setCurrentPage(page)}
-        /> */}
         </div>
       </div>
       <Footer />
