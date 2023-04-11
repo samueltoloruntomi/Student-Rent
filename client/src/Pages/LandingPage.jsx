@@ -19,6 +19,7 @@ export const LandingPage = () => {
   }
 
   return (
+    
     <div>
       <Header />
       <div style={{marginTop: "150px"}}>

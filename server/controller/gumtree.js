@@ -12,7 +12,10 @@ class ScrapeGumtree {
             const { postalCode } = req.params;
             //const url = `https://www.gumtree.com/search?search_category=property-to-rent&search_location=${postalCode}&property_type=flat&q=&min_price=100&max_price=1500&min_property_number_beds=&max_property_number_beds=`
             //const url = `https://www.gumtree.com/flats-houses/property-to-rent/uk/${postalCode}`;
-            const url = `https://www.gumtree.com/flats-houses/property-to-rent/flat/uk/${postalCode}` // website URL
+            
+            
+            //https://www.gumtree.com/flats-houses/property-to-rent/flat/uk
+            const url = `https://www.gumtree.com/search?featured_filter=false&q=&search_category=property-to-rent&urgent_filter=false&sort=date&search_scope=false&photos_filter=false&search_location=Edinburgh&tl=&distance=0.0001/${postalCode}` // website URL
 
             const response = await fetch(url); // return url response
             const html = await response.text();
