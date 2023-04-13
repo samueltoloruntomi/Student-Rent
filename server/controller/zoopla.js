@@ -49,13 +49,15 @@ class ScrapeZoopla {
         }
     }
 
-
+// recommends close alternatice to users if search query is not found in database of 50items scrapped, it goes back to source websites to run the query to make recommendation
     static async getAltSearchedZooplaHouses(req, res) {
         try {
 
-            const { postalCode, minPrice, maxPrice } = req.params;
+            const { postalCode, minPrice, maxPrice, minBedroom, maxBedroom } = req.params;
             
-            const url = `https://www.zoopla.co.uk/to-rent/property/edinburgh-county/?keywords=student&price_frequency=per_month&price_max=${maxPrice}&price_min=${minPrice}&q=${postalCode}&results_sort=newest_listings&search_source=to-rent`; // website URL
+           // const url = `https://www.zoopla.co.uk/to-rent/property/edinburgh-county/?keywords=student&price_frequency=per_month&price_max=${maxPrice}&price_min=${minPrice}&q=${postalCode}&results_sort=newest_listings&search_source=to-rent`; // website URL
+
+            const url = `https://www.zoopla.co.uk/to-rent/property/edinburgh/?beds_max=${maxBedroom}&beds_min=${minBedroom}&keywords=student&price_frequency=per_month&price_max=${maxPrice}&price_min=${minPrice}&q=${postalCode}&results_sort=newest_listings&search_source=to-rent`
 
             const response = await fetch(url); // return url response
             const html = await response.text();

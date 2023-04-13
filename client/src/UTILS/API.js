@@ -20,9 +20,9 @@ export async function GetScrapedData(postalCode) {
     }
   }
 
-  export async function GetAltZooplaScrapedData(postalCode, minPrice, maxprice) {
+  export async function GetAltZooplaScrapedData(postalCode, minPrice, maxprice, minBedroom, maxBedroom) {
     try {
-      const info = await axios.get(BaseUrl + "zooplaAlt/" + postalCode + "/" + minPrice + "/" + maxprice);
+      const info = await axios.get(BaseUrl + "zooplaAlt/" + postalCode + "/" + minPrice + "/" + maxprice + "/" + minBedroom + "/" + maxBedroom);
       return info.data.data;
     } catch (error) {
       throw error;

@@ -15,87 +15,16 @@ import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
-const ListOfHouses = [
-  {
-    _id: "640df0b5c2052f45ae0c725d",
-    typeOfApartment: "1 bed flat to rent",
-    apartmentDescription: "Watson Crescent, Edinburgh EH11",
-    price: "£900 pcm",
-    subPrice: "£208 pw",
-    postedOn: "Listed on 10th Mar 2023",
-    availability: "Available from 1st Apr 2023",
-    distance1: "0.6 miles Haymarket",
-    distance2: "1.1 miles Slateford",
-    image:
-      "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    __v: 0,
-  },
-  {
-    _id: "640df0b5c2052f45ae0c725e",
-    typeOfApartment: "1 bed flat to rent",
-    apartmentDescription: "Mount Grange, Edinburgh EH9",
-    price: "£795 pcm",
-    subPrice: "£183 pw",
-    postedOn: "Listed on 9th Mar 2023",
-    availability: "Available from 13th Mar 2023",
-    distance1: "1.2 miles Haymarket",
-    distance2: "1.3 miles Edinburgh",
-    image:
-      "https://images.pexels.com/photos/1643389/pexels-photo-1643389.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    __v: 0,
-  },
-  {
-    _id: "640df0b5c2052f45ae0c725f",
-    typeOfApartment: "1 bed flat to rent",
-    apartmentDescription: "Duff Street, Dalry, Edinburgh EH11",
-    price: "£950 pcm",
-    subPrice: "£219 pw",
-    postedOn: "Listed on 8th Mar 2023",
-    availability: "Available from 27th Mar 2023",
-    distance1: "0.3 miles Haymarket",
-    distance2: "1.3 miles Slateford",
-    image:
-      "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    __v: 0,
-  },
-  {
-    _id: "640df0b5c2052f45ae0c7260",
-    typeOfApartment: "1 bed flat to rent",
-    apartmentDescription: "Balcarres Street, Morningside, Edinburgh EH10",
-    price: "£950 pcm",
-    subPrice: "£219 pw",
-    postedOn: "Listed on 8th Mar 2023",
-    availability: "Available from 21st Mar 2023",
-    distance1: "1.2 miles Slateford",
-    distance2: "1.4 miles Haymarket",
-    image:
-      "https://images.pexels.com/photos/1438832/pexels-photo-1438832.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    __v: 0,
-  },
-  {
-    _id: "640df0b5c2052f45ae0c7261",
-    typeOfApartment: "1 bed flat to rent",
-    apartmentDescription: "Gorgie Road, Edinburgh EH11",
-    price: "£765 pcm",
-    subPrice: "£177 pw",
-    postedOn: "Listed on 8th Mar 2023",
-    availability: "Available from 10th Apr 2023",
-    distance1: "0.7 miles Haymarket",
-    distance2: "1 mile Slateford",
-    image:
-      "https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    __v: 0,
-  },
-];
+
 
 let PageSize = 3;
 export const Houses = () => {
   const [selectedProperties, setSelectedProperties] = useState(null);
-  const [selectedMinPrice, setSelectedMinPrice] = useState(null);
-  const [selectedMaxPrice, setSelectedMaxPrice] = useState(null);
+  const [selectedMinPrice, setSelectedMinPrice] = useState('');
+  const [selectedMaxPrice, setSelectedMaxPrice] = useState('');
 
-  const [selectedMinBedRoom, setSelectedMinBedRoom] = useState(null);
-  const [selectedMaxBedRoom, setSelectedMaxBedRoom] = useState(null);
+  const [selectedMinBedRoom, setSelectedMinBedRoom] = useState('');
+  const [selectedMaxBedRoom, setSelectedMaxBedRoom] = useState('');
   const [houses, setHouses] = useState([])
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -133,10 +62,31 @@ export const Houses = () => {
   ];
 
   useEffect(() => {
-    console.log(code);
     searchFunction();
+  }, []);
 
-  }, [])
+  const checkEmptyFiled = (fields) => {
+    for(const field in fields) {
+      if(fields[field] !== '') {
+        console.log("true")
+        return false;
+      }
+    }
+   return true;
+  }
+
+  const resetSearch = async () => 
+  {
+    // console.log("resetting...");
+    // console.log(selectedMinPrice);
+    console.log(selectedMaxPrice);
+    // if((selectedMinPrice === undefined || selectedMinPrice?.name === '' ) && (selectedMaxPrice === '' || selectedMaxPrice?.name === '') && selectedMaxBedRoom === '' && selectedMinBedRoom === '') {
+    //   console.log("checking...")
+    //   //await searchFunction();
+    // }
+
+    await searchFunction();
+  }
 
   const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
@@ -147,14 +97,21 @@ export const Houses = () => {
     const zooplaHouses = await GetZooplaScrapedData(code);
     const results = [...houses, ...zooplaHouses]
     let shuffledData = shuffleArray(results);
+
     setHouses(shuffledData)
     return
   }
 
   const AltSearchFunction = async () => {
-    const houses = await GetAltZooplaScrapedData(code, 350, 1000);
+    const minPrice = Number(selectedMinPrice?.name.split(" ")[0].replace('£', ''));
+    const maxPrice = Number(selectedMaxPrice?.name.split(" ")[0].replace('£', ''));
+
+    const minRoom = Number(selectedMinBedRoom?.name.split(" ")[0]);
+    const maxRoom = Number(selectedMaxBedRoom?.name.split(" ")[0]);
+
+    const houses = await GetAltZooplaScrapedData(code, minPrice, maxPrice, minRoom, maxRoom);
     console.log(houses)
-   setHouses(houses)
+    setHouses(houses)
     return
   }
 
@@ -175,7 +132,7 @@ export const Houses = () => {
       //const property = house.agent.toLowerCase().split(" ");
 
       // THE RULE ENGINE
-      return (price >= minPrice && price <= maxPrice) || (bedroom >= minRoom && bedroom <= maxRoom);
+      return (price >= minPrice || price <= maxPrice) || (bedroom >= minRoom || bedroom <= maxRoom);
     });
     console.log(filteredData);
     if(filteredData.length > 0)  {
@@ -225,22 +182,48 @@ export const Houses = () => {
               
   
                   <div className="col-md-2">
-                    <Dropdown value={selectedMinPrice} onChange={(e) => setSelectedMinPrice(e.value)} options={Prices} optionLabel="name" 
+                    <Dropdown value={selectedMinPrice} onChange={(e) =>{ 
+                      setSelectedMinPrice(e.value)
+                      if(selectedMaxPrice === undefined && selectedMinPrice === undefined) {
+                        console.log("Undefined")
+                      }
+                      else {
+                        console.log("defined");
+                      }
+                      //resetSearch();
+                    }} options={Prices} optionLabel="name" 
                       showClear placeholder="Min price" className={`${styles.mSelect}`} />
                   </div>
   
                   <div className="col-md-2">
-                    <Dropdown value={selectedMaxPrice} onChange={(e) => setSelectedMaxPrice(e.value)} options={Prices} optionLabel="name" 
+                    <Dropdown value={selectedMaxPrice} onChange={(e) =>{ 
+                      setSelectedMaxPrice(e.value);
+                      //selectedMaxPrice === undefined ? '' :  resetSearch()
+                      if(selectedMaxPrice === undefined && selectedMinPrice === undefined) {
+                        console.log("Undefined")
+                      }
+                      else {
+                        console.log("defined");
+                      }
+                      
+                      
+                    }} options={Prices} optionLabel="name" 
                       showClear placeholder="Max price" className={`${styles.mSelect}`} />
                   </div>
   
                   <div className="col-md-2">
-                      <Dropdown value={selectedMinBedRoom} onChange={(e) => setSelectedMinBedRoom(e.value)} options={rooms} optionLabel="name" 
+                      <Dropdown value={selectedMinBedRoom} onChange={(e) =>{
+                         setSelectedMinBedRoom(e.value);
+                         resetSearch();
+                        }} options={rooms} optionLabel="name" 
                       showClear placeholder="Min Bedroom" className={`${styles.mSelect}`} />
                   </div>
   
                   <div className="col-md-2">
-                      <Dropdown value={selectedMaxBedRoom} onChange={(e) => setSelectedMaxBedRoom(e.value)} options={rooms} optionLabel="name" 
+                      <Dropdown value={selectedMaxBedRoom} onChange={(e) =>{ 
+                        setSelectedMaxBedRoom(e.value);
+                        resetSearch();
+                      }} options={rooms} optionLabel="name" 
                       showClear placeholder="Max Bedroom" className={`${styles.mSelect}`} />
                   </div>
   
