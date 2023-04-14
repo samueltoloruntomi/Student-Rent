@@ -110,7 +110,7 @@ export const Houses = () => {
       const bedroom = Number(house.rooms.split(" ")[0]);
 
       // THE RULE ENGINE
-      return (price >= minPrice && price <= maxPrice) || (bedroom >= minRoom && bedroom <= maxRoom);
+      return (price >= minPrice && price <= maxPrice) && (bedroom >= minRoom && bedroom <= maxRoom);
     });
     if(filteredData.length > 0)  {
       setHouses(filteredData);
