@@ -55,7 +55,6 @@ class ScrapeZoopla {
 
             const { postalCode, minPrice, maxPrice, minBedroom, maxBedroom } = req.params;
             
-           // const url = `https://www.zoopla.co.uk/to-rent/property/edinburgh-county/?keywords=student&price_frequency=per_month&price_max=${maxPrice}&price_min=${minPrice}&q=${postalCode}&results_sort=newest_listings&search_source=to-rent`; // website URL
 
             const url = `https://www.zoopla.co.uk/to-rent/property/edinburgh/?beds_max=${maxBedroom}&beds_min=${minBedroom}&keywords=student&price_frequency=per_month&price_max=${maxPrice}&price_min=${minPrice}&q=${postalCode}&results_sort=newest_listings&search_source=to-rent`
 

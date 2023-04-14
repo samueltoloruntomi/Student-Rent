@@ -7,7 +7,6 @@ import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css"; 
-import Pagination from "../components/Pagination"; 
 import { useParams } from "react-router-dom";
 import { GetScrapedData, GetZooplaScrapedData, GetAltZooplaScrapedData } from "../UTILS/API";
 import { Loader } from "../components/Loader";
@@ -16,16 +15,14 @@ import { Footer } from '../components/Footer'
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
 
-
-let PageSize = 3;
+//function to display the houses on the gui
 export const Houses = () => {
-  const [selectedProperties, setSelectedProperties] = useState(null);
-  const [selectedMinPrice, setSelectedMinPrice] = useState('');
+  const [selectedMinPrice, setSelectedMinPrice] = useState(''); //sets state of minprice to data entered by user
   const [selectedMaxPrice, setSelectedMaxPrice] = useState('');
 
   const [selectedMinBedRoom, setSelectedMinBedRoom] = useState('');
   const [selectedMaxBedRoom, setSelectedMaxBedRoom] = useState('');
-  const [houses, setHouses] = useState([])
+  const [houses, setHouses] = useState([]) //empty array, receives content from zoopla, gumtree
 
   const [currentPage, setCurrentPage] = useState(1);
   const { code } = useParams();
@@ -60,31 +57,13 @@ export const Houses = () => {
     { name: '£1800 pcm' },
     { name: '£2000 pcm' },
   ];
-
+//react hook to display page content
   useEffect(() => {
     searchFunction();
   }, []);
 
-  const checkEmptyFiled = (fields) => {
-    for(const field in fields) {
-      if(fields[field] !== '') {
-        console.log("true")
-        return false;
-      }
-    }
-   return true;
-  }
-
   const resetSearch = async () => 
   {
-    // console.log("resetting...");
-    // console.log(selectedMinPrice);
-    console.log(selectedMaxPrice);
-    // if((selectedMinPrice === undefined || selectedMinPrice?.name === '' ) && (selectedMaxPrice === '' || selectedMaxPrice?.name === '') && selectedMaxBedRoom === '' && selectedMinBedRoom === '') {
-    //   console.log("checking...")
-    //   //await searchFunction();
-    // }
-
     await searchFunction();
   }
 
@@ -118,23 +97,21 @@ export const Houses = () => {
   const filteredFunction = async (e) => {
     e.preventDefault();
     // Use Number() to convert price strings to numbers
-    const minPrice = Number(selectedMinPrice?.name.split(" ")[0].replace('£', ''));
-    const maxPrice = Number(selectedMaxPrice?.name.split(" ")[0].replace('£', ''));
+    const minPrice = Number(selectedMinPrice?.name?.split(" ")[0]?.replace('£', ''));
+    const maxPrice = Number(selectedMaxPrice?.name?.split(" ")[0]?.replace('£', ''));
 
-    const minRoom = Number(selectedMinBedRoom?.name.split(" ")[0]);
-    const maxRoom = Number(selectedMaxBedRoom?.name.split(" ")[0]);
+    const minRoom = Number(selectedMinBedRoom?.name?.split(" ")[0]);
+    const maxRoom = Number(selectedMaxBedRoom?.name?.split(" ")[0]);
 
   
     // Use Array.filter() to filter houses by price range
     const filteredData = await houses.filter(house => {
       const price = Number(house.price.split(" ")[0].replace(/[^\d.-]/g, "")); // Convert house price to number
       const bedroom = Number(house.rooms.split(" ")[0]);
-      //const property = house.agent.toLowerCase().split(" ");
 
       // THE RULE ENGINE
-      return (price >= minPrice || price <= maxPrice) || (bedroom >= minRoom || bedroom <= maxRoom);
+      return (price >= minPrice && price <= maxPrice) || (bedroom >= minRoom && bedroom <= maxRoom);
     });
-    console.log(filteredData);
     if(filteredData.length > 0)  {
       setHouses(filteredData);
     }
@@ -163,13 +140,7 @@ export const Houses = () => {
     }
   };
   
-  const currentData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return houses.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
-
-
+  //if house array is empty is displays the loader, handled in the else segment at the end instead of an emptt screen
   if(houses.length > 0) {
     return (
       <div>
@@ -184,13 +155,7 @@ export const Houses = () => {
                   <div className="col-md-2">
                     <Dropdown value={selectedMinPrice} onChange={(e) =>{ 
                       setSelectedMinPrice(e.value)
-                      if(selectedMaxPrice === undefined && selectedMinPrice === undefined) {
-                        console.log("Undefined")
-                      }
-                      else {
-                        console.log("defined");
-                      }
-                      //resetSearch();
+                     
                     }} options={Prices} optionLabel="name" 
                       showClear placeholder="Min price" className={`${styles.mSelect}`} />
                   </div>
@@ -198,14 +163,7 @@ export const Houses = () => {
                   <div className="col-md-2">
                     <Dropdown value={selectedMaxPrice} onChange={(e) =>{ 
                       setSelectedMaxPrice(e.value);
-                      //selectedMaxPrice === undefined ? '' :  resetSearch()
-                      if(selectedMaxPrice === undefined && selectedMinPrice === undefined) {
-                        console.log("Undefined")
-                      }
-                      else {
-                        console.log("defined");
-                      }
-                      
+                     
                       
                     }} options={Prices} optionLabel="name" 
                       showClear placeholder="Max price" className={`${styles.mSelect}`} />
@@ -214,7 +172,7 @@ export const Houses = () => {
                   <div className="col-md-2">
                       <Dropdown value={selectedMinBedRoom} onChange={(e) =>{
                          setSelectedMinBedRoom(e.value);
-                         resetSearch();
+                       
                         }} options={rooms} optionLabel="name" 
                       showClear placeholder="Min Bedroom" className={`${styles.mSelect}`} />
                   </div>
@@ -222,7 +180,7 @@ export const Houses = () => {
                   <div className="col-md-2">
                       <Dropdown value={selectedMaxBedRoom} onChange={(e) =>{ 
                         setSelectedMaxBedRoom(e.value);
-                        resetSearch();
+                        
                       }} options={rooms} optionLabel="name" 
                       showClear placeholder="Max Bedroom" className={`${styles.mSelect}`} />
                   </div>
@@ -233,15 +191,16 @@ export const Houses = () => {
                     <Button onClick={filteredFunction} label="Search" severity="danger" />
                     
                   </div>
+                   <div className="col-md-2">
+                    <Button onClick={resetSearch} label="Reset" severity="primary" />
+                    
+                  </div>
                   </div>
                   
           </form>
         </div>
   
-        {/* <div className={`${styles.houseCard}`}>
-  
-          </div> */}
-  
+        
         <div style={{ marginTop: "350px" }}>
           {houses.map((house, i) => {
             return (

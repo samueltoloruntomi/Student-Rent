@@ -31,11 +31,11 @@ export const LandingPage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
               type="text"
-              placeholder="Enter post code within Edinburgh. Eg EH10, 5DT"
+              placeholder="Enter post code within Edinburgh. Eg EH10 5DT"
               className={styles.input}
             />{" "}
            
-            {/* <Link to={`/houses/${searchQuery}`}> */}
+          
                 <button
                 style={{backgroundColor: '#FF4545', color: 'aliceblue'}}
                 className={`btn ${styles.search}`}
@@ -44,7 +44,7 @@ export const LandingPage = () => {
                 {" "}
                 <i class="bi bi-search"></i> Search
                 </button>
-            {/* </Link> */}
+            
           </form>
         </div>
       </section>
