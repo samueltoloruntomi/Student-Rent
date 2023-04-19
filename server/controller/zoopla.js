@@ -49,7 +49,7 @@ class ScrapeZoopla {
         }
     }
 
-// recommends close alternatice to users if search query is not found in database of 50items scrapped, it goes back to source websites to run the query to make recommendation
+// to recommend close alternatice to users if search query is not found in database of 50items scrapped, it goes back to source websites to run the query to make recommendation
     static async getAltSearchedZooplaHouses(req, res) {
         try {
 

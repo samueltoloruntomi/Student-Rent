@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 import express from "express";
 const app = express();
 import bodyParser from "body-parser";
@@ -27,4 +27,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
  Logger("APP LISTENER", `Server started on port ${PORT}`)
 });
-
