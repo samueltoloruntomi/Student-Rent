@@ -1,6 +1,7 @@
 import axios from "axios";
-const BaseUrl = "http://localhost:9000/api/v1/";
+const BaseUrl = "http://localhost:9000/api/v1/"; //backend url
 
+//return gumtree data
 export async function GetScrapedData(postalCode) {
     try {
       const info = await axios.get(BaseUrl + "gumtree/" + postalCode);

@@ -9,7 +9,7 @@ class ScrapeGumtree {
     static async getSearchedLocationBasedOnPostalCode(req, res) {
         try {
 
-            const { postalCode } = req.params;
+            const { postalCode } = req.params; //params for postal code, collects post code from gui and adds to the url, to get the required data for user
 
             const url = `https://www.gumtree.com/search?featured_filter=false&q=&search_category=property-to-rent&urgent_filter=false&sort=date&search_scope=false&photos_filter=false&search_location=Edinburgh&tl=&distance=0.0001/${postalCode}` // website URL
 
@@ -50,4 +50,4 @@ class ScrapeGumtree {
     }
 }
 
-export default ScrapeGumtree;
+export default ScrapeGumtree; //to export class, ScrapeGumtree

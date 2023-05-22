@@ -20,7 +20,7 @@ class ScrapeZoopla {
         
             // looping through the HTML code structure
             $(".f0xnzq0 > .f0xnzq2").map((i, el) => {
-                const item = {};
+                const item = {}; //object
                 item.title = $(el).find("._1ankud51").text().trim(); // getting the title text
                 item.address = $(el).find("._1ankud52").text().trim(); // getting the address text
                 item.description = $(el).find("._1ankud53").text(); // getting the description text
@@ -49,7 +49,7 @@ class ScrapeZoopla {
         }
     }
 
-// to recommend close alternatice to users if search query is not found in database of 50items scrapped, it goes back to source websites to run the query to make recommendation
+// to recommend close alternatice to users if search query is not found in database of 25items scrapped, it goes back to source websites to run the query to make recommendation
     static async getAltSearchedZooplaHouses(req, res) {
         try {
 
@@ -61,7 +61,7 @@ class ScrapeZoopla {
             const response = await fetch(url); // return url response
             const html = await response.text();
             const $ = cheerio.load(html);
-            const items = []; // 
+            const items = []; // temporary memory to hold data (objects)
         
             // looping through the HTML code structure
             $(".f0xnzq0 > .f0xnzq2").map((i, el) => {

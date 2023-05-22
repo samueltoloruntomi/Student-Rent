@@ -31,7 +31,7 @@ export const LandingPage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
               type="text"
-              placeholder="Enter post code within Edinburgh. Eg EH10 5DT"
+              placeholder="Enter post code within Edinburgh, e.g. EH10 5DT"
               className={styles.input}
             />{" "}
            

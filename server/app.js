@@ -6,7 +6,7 @@ import { Logger } from "./utils/Logger";
 import routes from "./routes/routes";
 import cors from "cors";
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 9000; //cloud ports or local ports
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/api/v1", routes);
+app.use("/api/v1/", routes);
 
 app.get("/", (req, res) => {
   res.send("<h1>Accommodation Server</h1>");

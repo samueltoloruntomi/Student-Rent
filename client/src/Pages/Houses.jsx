@@ -80,7 +80,7 @@ export const Houses = () => {
     setHouses(shuffledData)
     return
   }
-
+//inference engine 
   const AltSearchFunction = async () => {
     const minPrice = Number(selectedMinPrice?.name.split(" ")[0].replace('£', ''));
     const maxPrice = Number(selectedMaxPrice?.name.split(" ")[0].replace('£', ''));
@@ -93,7 +93,7 @@ export const Houses = () => {
     setHouses(houses)
     return
   }
-
+//inference engine
   const filteredFunction = async (e) => {
     e.preventDefault();
     // Use Number() to convert price strings to numbers
@@ -140,7 +140,7 @@ export const Houses = () => {
     }
   };
   
-  //if house array is empty is displays the loader, handled in the else segment at the end instead of an emptt screen
+  //if house array is empty it displays the loader, handled in the else segment at the end instead of an empty screen
   if(houses.length > 0) {
     return (
       <div>
